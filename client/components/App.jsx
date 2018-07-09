@@ -8,7 +8,8 @@ export default class App extends React.Component {
       stopName: "[loading...]",
       services: [],
       date: "",
-      time: ""
+      time: "",
+      isRealTime: true
     }
     this.count = 0;
     this.isFetching = false
@@ -63,14 +64,40 @@ export default class App extends React.Component {
       })
   }
 
+  setDisplayRealtime(isRealTime) {
+    console.log("setDisplayRealtime: ", isRealTime)
+    if (this.state.isRealTime == isRealTime) return
+    if (isRealTime) {
+      this.refs.btnRealTime.classList.add("btn-selected")
+      this.refs.btnAll.classList.remove("btn-selected")
+    } else {
+      this.refs.btnRealTime.classList.remove("btn-selected")
+      this.refs.btnAll.classList.add("btn-selected")
+    }
+    this.setState({isRealTime})
+  }
+
   render() {
     const {stopName, services} = this.state
 
     return (
       <div>
-        <h1>{this.state.stopName}</h1>
+        <h1>MetLink Time Table</h1>
         <div>Date: {this.state.date}</div>
         <div>Time: {this.state.time}</div>
+        <h2>{this.state.stopName}</h2>
+        <div className="btn-group">
+          <button ref="btnRealTime" className="btn-group-button btn-selected" onClick={
+            ()=>{
+              this.setDisplayRealtime(true)
+            }
+          }>Realtime</button>
+          <button ref="btnAll" className="btn-group-button" onClick={
+            ()=>{
+              this.setDisplayRealtime(false)
+            }
+          }>All</button>
+        </div>
         <table border="1" width="400px">
           <thead>
             <tr>
