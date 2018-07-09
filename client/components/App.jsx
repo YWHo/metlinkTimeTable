@@ -1,5 +1,6 @@
 import React from 'react'
 import {getScheduleAll, getScheduleRealTime} from '../api'
+import Stops from './Stops'
 
 export default class App extends React.Component {
   constructor(props) {
@@ -9,10 +10,13 @@ export default class App extends React.Component {
       services: [],
       date: "",
       time: "",
-      isRealTime: true
+      isRealTime: true,
+      stopCode: "WING"
     }
-    this.count = 0;
+
     this.isFetching = false
+    this.resetCount()
+    this.selectStation = this.selectStation.bind(this)
   }
 
   componentWillMount() {
@@ -27,8 +31,24 @@ export default class App extends React.Component {
     if (this.count > 5) {
       this.count = 0
     } else if (this.count == 1 && !this.isFetching) {
-      this.isFetching = true
-      getScheduleAll('WING')
+      this.fetchSchedule()
+    }
+  }
+
+  fetchSchedule() {
+    this.isFetching = true
+    if (this.state.isRealTime) {
+      getScheduleRealTime(this.state.stopCode)
+      .then(data => {
+        this.isFetching = false
+        this.state.stopName = data.StopName
+        this.state.services = data.Services
+      })
+      .catch(err => {
+        console.log("Error: ", err)
+      })
+    } else {
+      getScheduleAll(this.state.stopCode)
       .then(data => {
         this.isFetching = false
         this.state.stopName = data.StopName
@@ -65,8 +85,8 @@ export default class App extends React.Component {
   }
 
   setDisplayRealtime(isRealTime) {
-    console.log("setDisplayRealtime: ", isRealTime)
     if (this.state.isRealTime == isRealTime) return
+ 
     if (isRealTime) {
       this.refs.btnRealTime.classList.add("btn-selected")
       this.refs.btnAll.classList.remove("btn-selected")
@@ -74,7 +94,21 @@ export default class App extends React.Component {
       this.refs.btnRealTime.classList.remove("btn-selected")
       this.refs.btnAll.classList.add("btn-selected")
     }
+
+    this.resetCount()
     this.setState({isRealTime})
+  }
+
+  resetCount() {
+    this.count = 0
+  }
+
+  selectStation(e) {
+    if (e.target.value) {
+      this.resetCount()
+      const stopCode = e.target.value
+      this.setState({stopCode})
+    }
   }
 
   render() {
@@ -85,6 +119,7 @@ export default class App extends React.Component {
         <h1>MetLink Time Table</h1>
         <div>Date: {this.state.date}</div>
         <div>Time: {this.state.time}</div>
+        <Stops callback={this.selectStation}/>
         <h2>{this.state.stopName}</h2>
         <div className="btn-group">
           <button ref="btnRealTime" className="btn-group-button btn-selected" onClick={
