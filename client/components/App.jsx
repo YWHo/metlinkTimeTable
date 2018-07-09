@@ -6,18 +6,49 @@ export default class App extends React.Component {
     super(props)
     this.state = {
       stopName: "",
-      services: []
+      services: [],
+      date: "",
+      time: ""
     }
+    this.count = 0;
+    this.isFetching = false
+  }
 
-    getScheduleAll('WING')
+  componentDidMount() {
+    setInterval(()=>{
+      this.refreshData()
+      this.updateCurrentDateTime()
+    }, 1000);
+  }
+
+  refreshData() {
+    this.count++
+    if (this.count > 5) {
+      this.count = 0
+    } else if (this.count == 1 && !this.isFetching) {
+      this.isFetching = true
+      console.log('refresh data....')
+      getScheduleAll('WING')
       .then(data => {
-        this.setState({
-          stopName : data.StopName,
-          services : data.Services
-        })
-      }).catch(err => {
+        this.isFetching = false
+        this.state.stopName = data.StopName
+        this.state.services = data.Services
+      })
+      .catch(err => {
         console.log("Error: ", err)
       })
+    }
+  }
+
+  updateCurrentDateTime() {
+    console.log('update time...')
+    const now = new Date();
+    const date = now.toLocaleDateString('en-GB')
+    const time = now.toLocaleTimeString('en-US')
+    const dateTime = 'Date: ' + date + '<br>Time: ' + time;
+    this.setState({
+      date, time
+    })
   }
 
   showServices() {
@@ -34,23 +65,24 @@ export default class App extends React.Component {
 
   render() {
     const {stopName, services} = this.state
-    console.log("services: ", services)
 
     return (
       <div>
-      <h1>{this.state.stopName}</h1>
-      <table border="1" width="400px">
-        <thead>
-          <tr>
-            <td>Destination Stop Name</td>
-            <td>Departure Status</td>
-            <td>Minutes till next departure</td>
-          </tr>
-        </thead>
-        <tbody>
-          {this.showServices()}
-        </tbody>
-      </table>
+        <h1>{this.state.stopName}</h1>
+        <div>Date: {this.state.date}</div>
+        <div>Time: {this.state.time}</div>
+        <table border="1" width="400px">
+          <thead>
+            <tr>
+              <th>Destination Stop Name</th>
+              <th>Departure Status</th>
+              <th>Minutes till next departure</th>
+            </tr>
+          </thead>
+          <tbody>
+            {this.showServices()}
+          </tbody>
+        </table>
       </div>
     )
   }
