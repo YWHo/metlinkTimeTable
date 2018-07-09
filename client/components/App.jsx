@@ -5,7 +5,7 @@ export default class App extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      stopName: "",
+      stopName: "[loading...]",
       services: [],
       date: "",
       time: ""
@@ -14,7 +14,7 @@ export default class App extends React.Component {
     this.isFetching = false
   }
 
-  componentDidMount() {
+  componentWillMount() {
     setInterval(()=>{
       this.refreshData()
       this.updateCurrentDateTime()
@@ -27,7 +27,6 @@ export default class App extends React.Component {
       this.count = 0
     } else if (this.count == 1 && !this.isFetching) {
       this.isFetching = true
-      console.log('refresh data....')
       getScheduleAll('WING')
       .then(data => {
         this.isFetching = false
@@ -41,7 +40,6 @@ export default class App extends React.Component {
   }
 
   updateCurrentDateTime() {
-    console.log('update time...')
     const now = new Date();
     const date = now.toLocaleDateString('en-GB')
     const time = now.toLocaleTimeString('en-US')
@@ -54,11 +52,13 @@ export default class App extends React.Component {
   showServices() {
     return Array.from(this.state.services)
       .map((service, idx) => {
+        const minsToDeparture = Math.floor(service.DisplayDepartureSeconds/60)
+
         return (
           <tr key={"r" + idx}>
             <td>{service.DestinationStopName}</td>
             <td>{service.DepartureStatus}</td>
-            <td>{Math.floor(service.DisplayDepartureSeconds/60)}</td>
+            <td>{minsToDeparture}</td>
           </tr>)
       })
   }
