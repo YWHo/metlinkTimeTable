@@ -1,9 +1,9 @@
-const request = require('supertest')
-const server = require('../server')
-var nock = require('nock')
+import request from 'supertest'
+import nock from 'nock'
+import server from '../server'
 
 test('GET /timeTable/WING return JSON data', () => {
-  const data = {
+  const testData = {
     LastModified: '2018-07-09T20:34:56+12:00',
     Stop: {
       Name: 'Wingate Station',
@@ -28,7 +28,7 @@ test('GET /timeTable/WING return JSON data', () => {
   // Begin intercepting
   let interceptAPI = nock('https://www.metlink.org.nz')
     .get('/api/v1/StopDepartures/WING')
-    .reply(200, data)
+    .reply(200, testData)
 
   return request(server)
     .get('/timeTable/WING')
@@ -36,6 +36,7 @@ test('GET /timeTable/WING return JSON data', () => {
     .expect(200)
     .then(res => {
       interceptAPI.done() // end intercept
+      expect(res.body.hasOwnProperty('StopName')).toBe(true)
       expect(res.body.hasOwnProperty('Services')).toBe(true)
       expect(res.body.Services[0].hasOwnProperty('IsRealtime')).toBe(true)
     })

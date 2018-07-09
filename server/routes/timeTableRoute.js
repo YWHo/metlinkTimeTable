@@ -23,7 +23,7 @@ router.get('/:stationCode', function (req, res) {
 
 function extractData (jsonInput) {
   return {
-    Station: jsonInput.Stop.Name,
+    StopName: jsonInput.Stop.Name,
     Services: jsonInput.Services
   }
 }

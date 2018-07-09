@@ -1,6 +1,5 @@
-const request = require('supertest')
-
-const server = require('../server')
+import request from 'supertest'
+import server from '../server'
 
 test('GET /user/234 returns userID 234 data', () => {
   const expected = 234
