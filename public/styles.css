@@ -80,8 +80,10 @@ table {
 th {
   background-color: lawngreen;
   color: #404040;
+  padding: 5px;
 }
 
 td {
   background-color: aliceblue;
+  padding: 5px;
 }
