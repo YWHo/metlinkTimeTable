@@ -108,13 +108,13 @@ export default class App extends React.Component {
         <div>Time: {this.state.time}</div>
         <Stops callback={this.selectStation}/>
         <h2>{this.state.stopName}</h2>
-        <div className="btn-group">
-          <button ref="btnRealTime" className="btn-group-button btn-selected" onClick={
+        <div className="btn-twin">
+          <button ref="btnRealTime" className="btn-twin-button btn-selected" onClick={
             ()=>{
               this.setDisplayRealtime(true)
             }
           }>Realtime</button>
-          <button ref="btnAll" className="btn-group-button" onClick={
+          <button ref="btnAll" className="btn-twin-button" onClick={
             ()=>{
               this.setDisplayRealtime(false)
             }
