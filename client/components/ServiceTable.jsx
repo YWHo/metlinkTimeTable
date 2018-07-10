@@ -13,7 +13,7 @@ export default function Services(props) {
   })
 
   return (
-    <table border="1" width="400px">
+    <table>
       <thead>
         <tr>
           <th>Destination Stop Name</th>

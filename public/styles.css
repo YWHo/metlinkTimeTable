@@ -1,5 +1,5 @@
 * {
-  margin: 10px;
+  margin: 10px 0;
   padding: 0px;
   box-sizing: border-box;
 }
@@ -69,4 +69,19 @@ body {
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
+}
+
+table {
+  border: 1px;
+  width: 600px;
+  max-width: 96vw;
+}
+
+th {
+  background-color: lawngreen;
+  color: #404040;
+}
+
+td {
+  background-color: aliceblue;
 }
