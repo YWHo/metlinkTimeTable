@@ -33,7 +33,7 @@ router.get('/', function (req, res) {
       }</a></li>`
     })
     .join('\n')
-  res.statue(200).send(`<h1>Existing users:</h1><ul>${list}</ul>`)
+  res.status(200).send(`<h1>Existing users:</h1><ul>${list}</ul>`)
 })
 
 module.exports = router
