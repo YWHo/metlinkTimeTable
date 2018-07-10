@@ -1,5 +1,5 @@
 # metlinkTimeTable
-A mini Project to consume Metlink API
+A mini Project created with ReactJS and ExpressJS to consume Metlink API
 
 ## Live site
 https://metlink-timetable.herokuapp.com/
