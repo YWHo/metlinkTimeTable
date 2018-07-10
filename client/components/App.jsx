@@ -30,12 +30,10 @@ export default class App extends React.Component {
   }
 
   showFetchingInProgress() {
-    this.isFetching = true
     this.refs.loader.style.display = "block"
   }
 
   showFetchingDone() {
-    this.isFetching = false;
     this.refs.loader.style.display = "none"
   }
 
@@ -49,13 +47,14 @@ export default class App extends React.Component {
   }
 
   fetchSchedule() {
-    this.showFetchingInProgress()
+    this.isFetching = true
     if (this.state.isRealTime) {
       getScheduleRealTime(this.state.stopCode)
       .then(data => {
-        this.showFetchingDone()
+        this.isFetching = false;
         this.state.stopName = data.StopName
         this.state.services = data.Services
+        this.showFetchingDone()
       })
       .catch(err => {
         console.log("Error: ", err)
@@ -63,9 +62,10 @@ export default class App extends React.Component {
     } else {
       getScheduleAll(this.state.stopCode)
       .then(data => {
-        this.showFetchingDone()
+        this.isFetching = false;
         this.state.stopName = data.StopName
         this.state.services = data.Services
+        this.showFetchingDone()
       })
       .catch(err => {
         console.log("Error: ", err)
@@ -86,6 +86,7 @@ export default class App extends React.Component {
   updateRealtime(isRealTime) {
     if (this.state.isRealTime == isRealTime) return
     this.resetCount()
+    this.showFetchingInProgress()
     this.setState({isRealTime})
   }
 
@@ -97,6 +98,7 @@ export default class App extends React.Component {
     if (e.target.value) {
       this.resetCount()
       const stopCode = e.target.value
+      this.showFetchingInProgress()
       this.setState({stopCode})
     }
   }
