@@ -1,6 +1,6 @@
 import request from 'superagent'
 
-const timeTableUrl = 'http://localhost:3000/timeTable'
+const timeTableUrl = '/timeTable'
 
 export function getScheduleAll (stationCode) {
   return new Promise((resolve, reject) => {
