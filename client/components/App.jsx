@@ -29,6 +29,16 @@ export default class App extends React.Component {
     }, 1000);
   }
 
+  showFetchingInProgress() {
+    this.isFetching = true
+    this.refs.loader.style.display = "block"
+  }
+
+  showFetchingDone() {
+    this.isFetching = false;
+    this.refs.loader.style.display = "none"
+  }
+
   refreshData() {
     this.count++
     if (this.count > 5) {
@@ -39,11 +49,11 @@ export default class App extends React.Component {
   }
 
   fetchSchedule() {
-    this.isFetching = true
+    this.showFetchingInProgress()
     if (this.state.isRealTime) {
       getScheduleRealTime(this.state.stopCode)
       .then(data => {
-        this.isFetching = false
+        this.showFetchingDone()
         this.state.stopName = data.StopName
         this.state.services = data.Services
       })
@@ -53,7 +63,7 @@ export default class App extends React.Component {
     } else {
       getScheduleAll(this.state.stopCode)
       .then(data => {
-        this.isFetching = false
+        this.showFetchingDone()
         this.state.stopName = data.StopName
         this.state.services = data.Services
       })
@@ -102,6 +112,7 @@ export default class App extends React.Component {
         <Stops callback={this.selectStation}/>
         <h2>{this.state.stopName}</h2>
         <TwinButtons btnId1="btnRealTime" labelBtn1="Realtime" btnId2="btnAll" labelBtn2="All" isBtn1Active={this.state.isRealTime} callback={this.updateRealtime} />
+        <div id="loader-container"><div ref="loader" id="loader"></div></div>
         <ServiceTable services={this.state.services} />
       </div>
     )
