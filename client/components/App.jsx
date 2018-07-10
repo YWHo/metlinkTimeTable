@@ -1,6 +1,7 @@
 import React from 'react'
 import {getScheduleAll, getScheduleRealTime} from '../api'
 import Stops from './Stops'
+import ServiceTable from './ServiceTable'
 
 export default class App extends React.Component {
   constructor(props) {
@@ -70,20 +71,6 @@ export default class App extends React.Component {
     })
   }
 
-  showServices() {
-    return Array.from(this.state.services)
-      .map((service, idx) => {
-        const minsToDeparture = Math.floor(service.DisplayDepartureSeconds/60)
-
-        return (
-          <tr key={"r" + idx}>
-            <td>{service.DestinationStopName}</td>
-            <td>{service.DepartureStatus}</td>
-            <td>{minsToDeparture}</td>
-          </tr>)
-      })
-  }
-
   setDisplayRealtime(isRealTime) {
     if (this.state.isRealTime == isRealTime) return
  
@@ -116,7 +103,7 @@ export default class App extends React.Component {
 
     return (
       <div>
-        <h1>MetLink Time Table</h1>
+        <h1>metlink Time Table</h1>
         <div>Date: {this.state.date}</div>
         <div>Time: {this.state.time}</div>
         <Stops callback={this.selectStation}/>
@@ -133,18 +120,7 @@ export default class App extends React.Component {
             }
           }>All</button>
         </div>
-        <table border="1" width="400px">
-          <thead>
-            <tr>
-              <th>Destination Stop Name</th>
-              <th>Departure Status</th>
-              <th>Minutes till next departure</th>
-            </tr>
-          </thead>
-          <tbody>
-            {this.showServices()}
-          </tbody>
-        </table>
+        <ServiceTable services={this.state.services} />
       </div>
     )
   }
