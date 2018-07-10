@@ -2,6 +2,7 @@ import React from 'react'
 import {getScheduleAll, getScheduleRealTime} from '../api'
 import Stops from './Stops'
 import ServiceTable from './ServiceTable'
+import TwinButtons from './TwinButtons'
 
 export default class App extends React.Component {
   constructor(props) {
@@ -18,6 +19,7 @@ export default class App extends React.Component {
     this.isFetching = false
     this.resetCount()
     this.selectStation = this.selectStation.bind(this)
+    this.updateRealtime = this.updateRealtime.bind(this)
   }
 
   componentWillMount() {
@@ -71,17 +73,8 @@ export default class App extends React.Component {
     })
   }
 
-  setDisplayRealtime(isRealTime) {
+  updateRealtime(isRealTime) {
     if (this.state.isRealTime == isRealTime) return
- 
-    if (isRealTime) {
-      this.refs.btnRealTime.classList.add("btn-selected")
-      this.refs.btnAll.classList.remove("btn-selected")
-    } else {
-      this.refs.btnRealTime.classList.remove("btn-selected")
-      this.refs.btnAll.classList.add("btn-selected")
-    }
-
     this.resetCount()
     this.setState({isRealTime})
   }
@@ -108,18 +101,7 @@ export default class App extends React.Component {
         <div>Time: {this.state.time}</div>
         <Stops callback={this.selectStation}/>
         <h2>{this.state.stopName}</h2>
-        <div className="btn-twin">
-          <button ref="btnRealTime" className="btn-twin-button btn-selected" onClick={
-            ()=>{
-              this.setDisplayRealtime(true)
-            }
-          }>Realtime</button>
-          <button ref="btnAll" className="btn-twin-button" onClick={
-            ()=>{
-              this.setDisplayRealtime(false)
-            }
-          }>All</button>
-        </div>
+        <TwinButtons btnId1="btnRealTime" labelBtn1="Realtime" btnId2="btnAll" labelBtn2="All" isBtn1Active={this.state.isRealTime} callback={this.updateRealtime} />
         <ServiceTable services={this.state.services} />
       </div>
     )
