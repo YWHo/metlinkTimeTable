@@ -4,7 +4,7 @@ const router = express.Router()
 const defaultUsers = require('../data/users')
 var users = JSON.parse(JSON.stringify(defaultUsers)) // deep copy
 
-// REST: Update/PUT (POST /user/:id)
+// REST: Update (POST /user/:id)
 router.post('/:id', (req, res) => {
   updateData(req.params.id, req.body)
   res.redirect('/user')
@@ -14,8 +14,10 @@ function updateData (id, data) {
   if (!id || !data) return
 
   let user = getUserById(id)
-  user.Name = data.Name
-  user.Surname = data.Surname
+  if (user) {
+    user.Name = data.Name
+    user.Surname = data.Surname
+  }
 }
 
 // REST: Create (POST /user)
@@ -27,7 +29,7 @@ router.post('/', (req, res) => {
 function insertData (data) {
   if (!data) return
 
-  let largestID = 1
+  let largestID = 0
 
   if (users.length > 0) {
     let tmpUser = JSON.parse(JSON.stringify(users))
@@ -122,6 +124,13 @@ router.get('/:id/edit', (req, res) => {
   }
 })
 
+// REST: Delete (GET /user/:id/delete)
+router.get('/:id/delete', (req, res) => {
+  let result = users.filter(user => user.ID != req.params.id)
+  users = result
+  res.redirect('/user')
+})
+
 // REST: Index (GET /user/view)
 router.get('/', (req, res) => {
   const list = users
@@ -132,7 +141,7 @@ router.get('/', (req, res) => {
         <td>${user.Surname}</td>
         <td><a href="user/${user.ID}">View</a> | <a href="user/${
   user.ID
-}/edit">Edit</a> </td>
+}/edit">Edit</a> | <a href="user/${user.ID}/delete">Delete</a></td>
       </tr>`
     })
     .join('\n')
