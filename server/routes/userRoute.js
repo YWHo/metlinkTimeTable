@@ -145,6 +145,16 @@ router.get('/:id/delete', (req, res) => {
   res.redirect('/user')
 })
 
+// REST: Delete (DELETE /user/:id/delete)
+router.delete('/:id', (req, res) => {
+  let result = users.filter(user => user.ID != req.params.id)
+  if (Object.keys(result).length == Object.keys(users).length) {
+    res.json({ status: 'fail', message: 'Nothing to delete' })
+  } else {
+    res.json({ status: 'success', message: 'Entry is deleted' })
+  }
+})
+
 // REST: Index (GET /user/view)
 router.get('/', (req, res) => {
   const list = users
