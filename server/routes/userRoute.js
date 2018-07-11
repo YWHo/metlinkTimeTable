@@ -10,14 +10,28 @@ router.post('/:id', (req, res) => {
   res.redirect('/user')
 })
 
+// REST: Update (PUT /user/:id)
+router.put('/:id', (req, res) => {
+  const status = updateData(req.params.id, req.body)
+  if (status == 1) {
+    res.json({ status: 'success', user: getUserById(req.params.id) })
+  } else if (status == -1) {
+    res.json({ status: 'fail', message: 'user is not available' })
+  } else {
+    res.json({ status: 'fail', message: 'invalid id or data' })
+  }
+})
+
 function updateData (id, data) {
-  if (!id || !data) return
+  if (!id || !data) return 0
 
   let user = getUserById(id)
   if (user) {
-    user.Name = data.Name
-    user.Surname = data.Surname
+    user.Name = `${data.Name}`
+    user.Surname = `${data.Surname}`
+    return 1
   }
+  return -1
 }
 
 // REST: Create (POST /user)
