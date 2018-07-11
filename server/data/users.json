@@ -1,18 +1,6 @@
 [
-  {"ID":100, "Name":"Raffaele", "Surname":"Wenger"},
-  {"ID":101, "Name":"Bertus", "Surname":"Kruger"},
-  {"ID":102, "Name":"Mark", "Surname":"Zuckerberg"},
-  {"ID":113, "Name":"Bill", "Surname":"Gates"},
+  {"ID":100, "Name":"Mark", "Surname":"Zuckerberg"},
+  {"ID":101, "Name":"Bill", "Surname":"Gates"},
   {"ID":114, "Name":"Elon", "Surname":"Musk"},
-  {"ID":123, "Name":"Brian", "Surname":"Ho"},
-  {"ID":157, "Name":"Steve", "Surname":"Jobs"},
-  {"ID":234, "Name":"Chris", "Surname":"Barlow"},
-  {"ID":250, "Name":"Warren", "Surname":"Buffet"},
-  {"ID":251, "Name":"Jeff", "Surname":"Bezos"},
-  {"ID":300, "Name":"Jacinda", "Surname":"Arden"},
-  {"ID":301, "Name":"Donald", "Surname":"Trump"},
-  {"ID":302, "Name":"Theresa", "Surname":"May"},
-  {"ID":303, "Name":"Malcolm", "Surname":"Turnbull"},
-  {"ID":401, "Name":"Tony", "Surname":"Stark"},
-  {"ID":402, "Name":"Peter", "Surname":"Parker"}
+  {"ID":157, "Name":"Steve", "Surname":"Jobs"}
 ]

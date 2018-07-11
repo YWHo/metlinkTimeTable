@@ -1,10 +1,17 @@
 const path = require('path')
 const express = require('express')
+const bodyParser = require('body-parser')
 const server = express()
 const userRoute = require('./routes/userRoute')
 const timeTableRoute = require('./routes/timeTableRoute')
 
 server.use(express.static(path.join(__dirname, '../public')))
+// server.use(bodyParser.json())
+server.use(
+  bodyParser.urlencoded({
+    extended: true
+  })
+)
 server.use('/user', userRoute)
 server.use('/timeTable', timeTableRoute)
 
