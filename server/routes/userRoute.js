@@ -4,16 +4,29 @@ const router = express.Router()
 const defaultUsers = require('../data/users')
 var users = JSON.parse(JSON.stringify(defaultUsers)) // deep copy
 
+// REST: Update/PUT (POST /user/:id)
+router.post('/:id', (req, res) => {
+  updateData(req.params.id, req.body)
+  res.redirect('/user')
+})
+
+function updateData (id, data) {
+  if (!id || !data) return
+
+  let user = getUserById(id)
+  user.Name = data.Name
+  user.Surname = data.Surname
+}
+
 // REST: Create (POST /user)
 router.post('/', (req, res) => {
-  console.log('req.body: ', req.body)
-  if (req.body) {
-    insertData(req.body)
-  }
+  insertData(req.body)
   res.redirect('/user')
 })
 
 function insertData (data) {
+  if (!data) return
+
   let largestID = 1
 
   if (users.length > 0) {
@@ -57,24 +70,55 @@ router.get('/all', (req, res) => {
 })
 
 // REST: Show (GET /user/:id)
-router.get('/:userId', (req, res) => {
-  const userId = req.params.userId
+router.get('/:id', (req, res) => {
+  let user = getUserById(req.params.id)
 
-  if (userId) {
-    let found = users.find(user => {
-      if (user.ID == userId) {
-        return user
-      }
-    })
-
-    if (found) {
-      res.json(found)
-    } else {
-      res.json({})
-    }
+  if (user) {
+    res.json(user)
   } else {
-    // fail-safe, in case this is triggered
     res.json({})
+  }
+})
+
+function getUserById (id) {
+  if (id) {
+    let found = users.find(user => user.ID == id)
+    if (found) {
+      return found
+    } else {
+      return null
+    }
+  }
+}
+
+// REST: Edit (GET /user/:id/edit)
+router.get('/:id/edit', (req, res) => {
+  let user = getUserById(req.params.id)
+  if (user) {
+    res.status(200).send(
+      `<!DOCTYPE html>
+      <html>
+      <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>User: Edit</title>
+      </head>
+      <body>
+        <h2>Edit user</h2>
+        <form action="/user/${user.ID}" method="post">
+          Name:<br>
+          <input type="text" name="Name" value=${user.Name}>
+          <br>
+          Surname:<br>
+          <input type="text" name="Surname" value=${user.Surname}>
+          <br><br>
+          <input type="submit" value="Submit">
+        </form>
+      </body>
+      </html>`
+    )
+  } else {
+    res.status(400).send('<h2>User does not exist</h2>')
   }
 })
 
@@ -86,7 +130,9 @@ router.get('/', (req, res) => {
         <td>${user.ID}</td>
         <td>${user.Name}</td>
         <td>${user.Surname}</td>
-        <td><a href="user/${user.ID}">View</a></td>
+        <td><a href="user/${user.ID}">View</a> | <a href="user/${
+  user.ID
+}/edit">Edit</a> </td>
       </tr>`
     })
     .join('\n')

@@ -17,7 +17,7 @@ server.use('/timeTable', timeTableRoute)
 
 // Catch All: Show 404 at not supported pages
 server.get('*', function (req, res) {
-  res.send('<h1>Error 404</h1><p>Page is not available</p>', 404)
+  res.status(404).send('<h1>Error 404</h1><p>Page is not available</p>')
 })
 
 module.exports = server
