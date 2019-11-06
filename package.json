@@ -33,7 +33,7 @@
     "webpack-dev-server": "^3.1.4"
   },
   "scripts": {
-    "postinstall": "webpack --mode production",
+    "build": "webpack --mode production",
     "knex": "knex",
     "dev": "nodemon --watch server & webpack --mode development --watch",
     "start": "webpack --mode production & node server/index",
