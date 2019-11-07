@@ -1,5 +1,5 @@
 import React from 'react'
-import {getScheduleAll, getScheduleRealTime} from '../api'
+import {getScheduleAll, getScheduleRealTime} from '../apiRequester'
 import Stops from './Stops'
 import ServiceTable from './ServiceTable'
 import TwinButtons from './TwinButtons'

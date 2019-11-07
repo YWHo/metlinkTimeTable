@@ -4,13 +4,15 @@ const timeTableUrl = '/timeTable'
 
 export function getScheduleAll (stationCode) {
   return new Promise((resolve, reject) => {
-    request.get(`${timeTableUrl}/${stationCode}`).end((err, res) => {
-      if (err) {
-        reject(err)
-      } else {
+    const fullUrl = `${timeTableUrl}/${stationCode}`
+    request
+      .get(fullUrl)
+      .then(res => {
         resolve(res.body)
-      }
-    })
+      })
+      .catch(err => {
+        reject(err)
+      })
   })
 }
 
