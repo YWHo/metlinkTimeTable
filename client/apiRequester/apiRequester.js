@@ -7,6 +7,7 @@ export function getScheduleAll (stationCode) {
     const fullUrl = `${timeTableUrl}/${stationCode}`
     request
       .get(fullUrl)
+      .set('Accept', 'application/json')
       .then(res => {
         resolve(res.body)
       })
