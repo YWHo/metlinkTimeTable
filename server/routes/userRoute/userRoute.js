@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
 
-const defaultUsers = require('../data/users')
+const defaultUsers = require('../../data/users.json')
 var users = JSON.parse(JSON.stringify(defaultUsers)) // deep copy
 
 // REST: Update (POST /user/:id)

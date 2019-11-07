@@ -1,8 +1,8 @@
 import request from 'supertest'
 import nock from 'nock'
-import server from '../server'
+import server from '../../server'
 
-test('GET /timeTable/WING return JSON data', () => {
+describe('GET /timeTable/WING', () => {
   const testData = {
     LastModified: '2018-07-09T20:34:56+12:00',
     Stop: {
@@ -30,14 +30,16 @@ test('GET /timeTable/WING return JSON data', () => {
     .get('/api/v1/StopDepartures/WING')
     .reply(200, testData)
 
-  return request(server)
-    .get('/timeTable/WING')
-    .expect('Content-Type', /json/)
-    .expect(200)
-    .then(res => {
-      interceptAPI.done() // end intercept
-      expect(res.body.hasOwnProperty('StopName')).toBe(true)
-      expect(res.body.hasOwnProperty('Services')).toBe(true)
-      expect(res.body.Services[0].hasOwnProperty('IsRealtime')).toBe(true)
-    })
+  it('return JSON data', () => {
+    return request(server)
+      .get('/timeTable/WING')
+      .expect('Content-Type', /json/)
+      .expect(200)
+      .then(res => {
+        interceptAPI.done() // end intercept
+        expect(res.body.hasOwnProperty('StopName')).toBe(true)
+        expect(res.body.hasOwnProperty('Services')).toBe(true)
+        expect(res.body.Services[0].hasOwnProperty('IsRealtime')).toBe(true)
+      })
+  })
 })

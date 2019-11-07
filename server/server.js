@@ -2,7 +2,7 @@ const path = require('path')
 const express = require('express')
 const bodyParser = require('body-parser')
 const server = express()
-const userRoute = require('./routes/userRoute')
+const userRoute = require('./routes/userRoute/userRoute')
 const timeTableRoute = require('./routes/timeTableRoute')
 
 server.use(express.static(path.join(__dirname, '../public')))
