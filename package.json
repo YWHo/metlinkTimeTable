@@ -46,12 +46,10 @@
   },
   "lint-staged": {
     "client/**/*.js": [
-      "prettier-standard",
-      "git add"
+      "prettier-standard"
     ],
     "server/**/*.js": [
-      "prettier-standard",
-      "git add"
+      "prettier-standard"
     ]
   }
 }
